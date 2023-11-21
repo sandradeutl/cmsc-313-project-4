@@ -1,0 +1,7 @@
+/*Functions in C
+read
+display
+weave
+print stats
+free
+*/
