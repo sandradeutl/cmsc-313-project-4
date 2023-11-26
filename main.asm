@@ -1,7 +1,7 @@
 section .data
 
-menuPrompt:     db "Encryption menu options:", 10 ," s - show current messages", 10 ,"r - read new message", 10 ,"e - transform", 10 ,"p - print stats", 10 ,"q - quit program", 10 ,"enter option letter -> "
-menuPromptLen: equ $- menuPrompt
+menuPrompt:     db "Encryption menu options:", 10 ,"s - show current messages", 10 ,"r - read new message", 10 ,"e - transform", 10 ,"p - print stats", 10 ,"q - quit program", 10 ,"enter option letter -> "
+menuPromptLen:  equ $- menuPrompt
 ;idk why the color is completely in string form though
 
 printS:         db "this is s", 10
@@ -74,17 +74,15 @@ comparing:
 
     cmp r8b, 90 ;z (counter)
     je incrementCat
+    cmp r8b, 122
+    je incrementCat
 
-    cmp r10, 4
-    je catPrint
-
-    jmp prompt
-
-    ;cmp r8b, 122
-    ;inc r10
+    jmp prompt ;else statemetn
 
 incrementCat:
     inc r10
+    cmp r10, 4 ;this only runs with the wrong letter
+    je catPrint
     jmp prompt
 
 
