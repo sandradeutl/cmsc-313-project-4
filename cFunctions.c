@@ -40,8 +40,34 @@ char[] weave (char str[]) {
     return str;
 }
 
-void printStats (char* arr[][]) {
+void printStats (char str[]) {
     //count stats
+    int chars = sizeof(str); //built in function?
+    int lets = 0;
+    int digits = 0;
+    int specials = 0;
+    int puncs = 0;
+
+    for (int i = 0; i < chars; i++) {
+        if ((str[i] >= 'A' && str[i] <= 'Z') || (str[i] >= 'a' || str[i] <= 'z')) {
+            lets++;
+        }
+        else if (str[i] >= '0' && str <= '9') {
+            digits++;
+        }
+        else if (str[i] == '!' && str[i] == '?' && str[i] == '.' && str[i] == ',' && str[i] == '\"' && str[i] == ':' && str[i] == ';' && str[i] == '-' && str[i] == '_' && str[i] == ')' && str[i] == '(' && str[i] == '}' && str[i] == '{' && str[i] == ']' && str[i] == '[') {
+            puncs++;
+        }
+        else {
+            specials++;
+        }
+    }
+
+    printf("There are a total of %n characters in the text. \n", chars);
+    printf("There are %n letters. \n", lets);
+    printf("There are %n digits. \n", digits);
+    printf("There are %n special characters. \n", specials);
+    printf("There are %n punctuation characters. \n", puncs);
 }
 
 void free (char* arr[][]) {
