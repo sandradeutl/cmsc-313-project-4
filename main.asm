@@ -32,6 +32,8 @@ main:
     xor r10, r10 ;this will be the temporary z counter
 
 prompt:
+    xor r10, r10
+    
     mov rax, 1
     mov rdi, 1
     mov rsi, menuPrompt
@@ -87,6 +89,8 @@ incrementCat:
 
 
 printSL:
+    xor r10, r10
+    
     mov rax, 1
     mov rdi, 1
     mov rsi, printS
@@ -96,6 +100,8 @@ printSL:
     jmp prompt
 
 printRL:
+    xor r10, r10
+
     mov rax, 1
     mov rdi, 1
     mov rsi, printR
@@ -105,6 +111,8 @@ printRL:
     jmp prompt
 
 printEL:
+    xor r10, r10
+
     mov rax, 1
     mov rdi, 1
     mov rsi, printE
@@ -114,6 +122,8 @@ printEL:
     jmp prompt
 
 printPL:
+    xor r10, r10
+
     mov rax, 1
     mov rdi, 1
     mov rsi, printP
