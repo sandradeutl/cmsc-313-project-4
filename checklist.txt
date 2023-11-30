@@ -8,3 +8,4 @@
 - change reverse to store the string
 - connect c files to main.asm
 - connect reverse.asm to main.asm
+- makefile?
