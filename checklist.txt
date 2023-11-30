@@ -1,0 +1,10 @@
+- Code menu handler (assembly)
+- Code C functions
+    - display
+    - read
+    - weave
+    - print stats
+    - free
+- change reverse to store the string
+- connect c files to main.asm
+- connect reverse.asm to main.asm
