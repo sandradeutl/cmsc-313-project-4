@@ -1,11 +1,14 @@
 - Code menu handler (assembly)
+    - Initalize 10 spaces in mem for string : https://www.cs.uaf.edu/courses/cs301/2014-fall/notes/memory/
+    - array also is initialized, not taking from user input anymore
+
 - Code C functions
     - display
     - read
     - weave
     - print stats
     - free
-- change reverse to store the string
-- connect c files to main.asm
+- change reverse to store the string : see line 2 maybe? 
+- connect c files to main.asm : https://www.devdungeon.com/content/how-mix-c-and-assembly
 - connect reverse.asm to main.asm
 - makefile?
