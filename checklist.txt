@@ -1,4 +1,5 @@
 X at end = complete
+- dynamic memory
 
 - Code menu handler (assembly)
     - Initalizes 10 spaces in mem for string : https://www.cs.uaf.edu/courses/cs301/2014-fall/notes/memory/
