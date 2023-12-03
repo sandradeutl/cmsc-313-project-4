@@ -210,18 +210,22 @@ printEL:
 randChooseE:
     rdrand eax ;generate and store a randomly generated number in eax
 
-    cmp eax, ; figure out how to make it do evens or odds
-    je goReverse
-    cmp eax,
-    je goWeave
+    cmp eax, 64 ;need to figure out a different number for this
+    ja goReverse
+    cmp eax, 64
+    jbe goWeave
 
     jmp prompt
 
 goReverse:
     ;need to figure out how to pass a certain string to
+    
+    jmp prompt
 
 goWeave:
     call weave
+
+    jmp prompt
 
 printPL:
     xor r10, r10

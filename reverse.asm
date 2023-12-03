@@ -1,7 +1,8 @@
 section .data
 
-;need to change this so that it just takes in the string from the array/array
-;can't just print the string anymore, need to dyn allocate the memory
+; need to change this so that it just takes in the string from the array/array
+; can't just print the string anymore, need to dyn allocate the memory
+; need to pass back the new string too
 
 numPrompt:      db "Enter a number between 2 and the total number of characters in the string: ", 0
 numPromptLen:   equ $- numPrompt
