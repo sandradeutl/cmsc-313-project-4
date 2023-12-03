@@ -3,6 +3,7 @@ X at end = complete
 
 - Code menu handler (assembly)
     - Initalizes 10 spaces in mem for string : https://www.cs.uaf.edu/courses/cs301/2014-fall/notes/memory/
+    - memory needs to be WRITABLE : https://www.cs.uaf.edu/2015/fall/cs301/lecture/09_23_allocation.html
     - array also is initialized, not taking from user input anymore
     - menu X
         - prints all options X
