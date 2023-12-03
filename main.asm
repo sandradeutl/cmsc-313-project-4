@@ -141,5 +141,6 @@ catPrint:
     syscall
 
 exit:
-    mov rax, 60 ;seg faults
+    mov rax, 60 ;seg faults, I am looking into this
     xor rdi, rdi
+;I annotated the write up for this and drew out some logic ideas I will implement Thursday

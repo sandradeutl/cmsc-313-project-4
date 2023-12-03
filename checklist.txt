@@ -1,0 +1,27 @@
+X at end = complete
+
+- Code menu handler (assembly)
+    - Initalizes 10 spaces in mem for string : https://www.cs.uaf.edu/courses/cs301/2014-fall/notes/memory/
+    - array also is initialized, not taking from user input anymore
+    - menu X
+        - prints all options X
+        - takes in input
+        - s calls C function
+        - r calls C function
+        - e calls C function
+            - random choice leads to function call
+            - change should be stored
+        - p calls C function
+        - q quits X
+
+- Code C functions
+    - display (something funky is going on w arrays that I am looking into)
+    - read
+    - weave
+    - print stats
+    - free
+
+- change reverse.asm to store the string : see line 2 maybe? 
+- connect c files to main.asm : https://www.devdungeon.com/content/how-mix-c-and-assembly
+- connect reverse.asm to main.asm
+- makefile?
