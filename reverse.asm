@@ -1,5 +1,6 @@
 section .data
 
+;need to change this so that it just takes in the string from the array/array
 wordPrompt:     db "Please enter the text: ", 0
 wordPromptLen:  equ $- wordPrompt
 

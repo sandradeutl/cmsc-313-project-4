@@ -1,5 +1,18 @@
 section .data
 
+msg1: db "This is the origional message.", 0
+msg2: db "This is the origional message.", 0
+msg3: db "This is the origional message.", 0
+msg4: db "This is the origional message.", 0
+msg5: db "This is the origional message.", 0
+msg6: db "This is the origional message.", 0
+msg7: db "This is the origional message.", 0
+msg8: db "This is the origional message.", 0
+msg9: db "This is the origional message.", 0
+msg10: db "This is the origional message.", 0
+
+msg_arr: dq msg1, msg2, msg3, msg4, msg5, msg6, msg7, msg8, msg9, msg10
+
 menuPrompt:     db "Encryption menu options:", 10 ,"s - show current messages", 10 ,"r - read new message", 10 ,"e - transform", 10 ,"p - print stats", 10 ,"q - quit program", 10 ,"enter option letter -> "
 menuPromptLen:  equ $- menuPrompt
 ;idk why the color is completely in string form though
@@ -10,7 +23,7 @@ printSLen       equ $- printS
 printR:         db "this is r", 10
 printRLen       equ $- printR
 
-printE:         db "this is e", 10
+printE:         db "this is e", 10 ;need to figure out the string storage/passing situation here
 printELen       equ $- printE
 
 printP:         db "this is p", 10
@@ -30,6 +43,67 @@ global main
 main:
     xor r8, r8
     xor r10, r10 ;this will be the temporary z counter
+
+;allocate dynamic memory for string
+allocateStrMem:
+    mov rbx, msg_arr
+
+    mov edi, 12 ;need to figue out syscall for this
+    mov eax, 12
+    syscall
+
+    ; error checking for this?
+
+    cmp rax, -1
+    je failed_alloc
+
+    mov [msg_arr], rax
+    add rax, 24
+
+    lea rsi, [msg1]
+    mov [rax], rsi
+    add rax, 8
+
+    lea rsi, [msg2]
+    mov [rax], rsi
+    add rax, 8
+
+    lea rsi, [msg3]
+    mov [rax], rsi
+    add rax, 8
+
+    lea rsi, [msg4]
+    mov [rax], rsi
+    add rax, 8
+
+    lea rsi, [msg5]
+    mov [rax], rsi
+    add rax, 8
+
+    lea rsi, [msg6]
+    mov [rax], rsi
+    add rax, 8
+
+    lea rsi, [msg1]
+    mov [rax], rsi
+    add rax, 8
+
+    lea rsi, [msg7]
+    mov [rax], rsi
+    add rax, 8
+
+    lea rsi, [msg8]
+    mov [rax], rsi
+    add rax, 8
+
+    lea rsi, [msg9]
+    mov [rax], rsi
+    add rax, 8
+
+    lea rsi, [msg10]
+    mov [rax], rsi
+    
+;handle allocation failure?
 
 prompt:
     xor r10, r10
@@ -141,6 +215,6 @@ catPrint:
     syscall
 
 exit:
-    mov rax, 60 ;seg faults, I am looking into this
+    mov rax, 60 ;seg faults
     xor rdi, rdi
-;I annotated the write up for this and drew out some logic ideas I will implement Thursday
+    syscall
