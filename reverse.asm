@@ -1,8 +1,7 @@
 section .data
 
 ;need to change this so that it just takes in the string from the array/array
-wordPrompt:     db "Please enter the text: ", 0
-wordPromptLen:  equ $- wordPrompt
+;can't just print the string anymore, need to dyn allocate the memory
 
 numPrompt:      db "Enter a number between 2 and the total number of characters in the string: ", 0
 numPromptLen:   equ $- numPrompt
@@ -29,25 +28,6 @@ main:
     xor r9, r9
     xor r12, r12
     xor r13, r13        ;just to make sure registers are null
-
-promptWord:
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, wordPrompt 
-    mov rdx, wordPromptLen
-    syscall
-
-    mov rax, 0
-    mov rdi, 0
-    mov rsi, string
-    mov rdx, 100
-    syscall
-
-checkWord:
-    dec rax             ;for new line key
-    cmp rax, 8          ;this is the size
-    jle  promptWord
-    mov r12, rax        ;can you move this into something?
 
 promptNum:
     mov rax, 1

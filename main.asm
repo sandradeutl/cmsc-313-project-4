@@ -16,6 +16,7 @@ msg_arr: dq msg1, msg2, msg3, msg4, msg5, msg6, msg7, msg8, msg9, msg10
 menuPrompt:     db "Encryption menu options:", 10 ,"s - show current messages", 10 ,"r - read new message", 10 ,"e - transform", 10 ,"p - print stats", 10 ,"q - quit program", 10 ,"enter option letter -> "
 menuPromptLen:  equ $- menuPrompt
 ;idk why the color is completely in string form though
+; need to add the "Invalid option, try again!" part
 
 printS:         db "this is s", 10
 printSLen       equ $- printS
@@ -193,6 +194,8 @@ printRL:
 
     jmp prompt
 
+;need to randomly determine which to call
+;need a je statement for whichever c function to call
 printEL:
     xor r10, r10
 
@@ -200,14 +203,25 @@ printEL:
     mov rdi, 1
     mov rsi, printE
     mov rdx, printELen
-    
-    ;need to randomly determine which to call
-
-    ;need a je statement for whichever c function to call
-
     syscall
 
+    jmp randChooseE
+
+randChooseE:
+    rdrand eax ;generate and store a randomly generated number in eax
+
+    cmp eax, ; figure out how to make it do evens or odds
+    je goReverse
+    cmp eax,
+    je goWeave
+
     jmp prompt
+
+goReverse:
+    ;need to figure out how to pass a certain string to
+
+goWeave:
+    call weave
 
 printPL:
     xor r10, r10
@@ -220,7 +234,6 @@ printPL:
     syscall
 
     jmp prompt
-
 
 catPrint:
     mov rax, 1
