@@ -1,5 +1,6 @@
 section .data
 
+; how to get these to communicate?
 ; need to change this so that it just takes in the string from the array/array
 ; can't just print the string anymore, need to dyn allocate the memory
 ; need to pass back the new string too

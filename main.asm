@@ -1,5 +1,7 @@
 section .data
 
+; how do we choose what string to work on?
+
 msg1: db "This is the origional message.", 0
 msg2: db "This is the origional message.", 0
 msg3: db "This is the origional message.", 0
