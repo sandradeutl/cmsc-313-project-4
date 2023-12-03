@@ -40,6 +40,13 @@ section .text
 
 global main
 
+;external c functions
+extern read
+extern display
+extern weave
+extern printStats
+extern free
+
 main:
     xor r8, r8
     xor r10, r10 ;this will be the temporary z counter
@@ -54,8 +61,8 @@ allocateStrMem:
 
     ; error checking for this?
 
-    cmp rax, -1
-    je failed_alloc
+    ; cmp rax, -1
+    ; je failed_alloc
 
     mov [msg_arr], rax
     add rax, 24
@@ -169,6 +176,7 @@ printSL:
     mov rdi, 1
     mov rsi, printS
     mov rdx, printSLen
+    call display
     syscall
 
     jmp prompt
@@ -180,6 +188,7 @@ printRL:
     mov rdi, 1
     mov rsi, printR
     mov rdx, printRLen
+    call read
     syscall
 
     jmp prompt
@@ -191,6 +200,11 @@ printEL:
     mov rdi, 1
     mov rsi, printE
     mov rdx, printELen
+    
+    ;need to randomly determine which to call
+
+    ;need a je statement for whichever c function to call
+
     syscall
 
     jmp prompt
@@ -202,6 +216,7 @@ printPL:
     mov rdi, 1
     mov rsi, printP
     mov rdx, printPLen
+    call printStats
     syscall
 
     jmp prompt
