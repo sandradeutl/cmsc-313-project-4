@@ -55,6 +55,17 @@ main:
     xor r10, r10 ;this will be the temporary z counter
 
 ;allocate dynamic memory for string
+
+; initial strings aren't dyn alloc, y
+;ou only dyn allo when user wants to read a message, would do dyn mem alloc in C
+; disadvantage, in array, some are dyna lloc and some are not, need to keep track 
+;of what's dyn alloc and what's not
+
+;dyn alloc everything
+;means you have to dyn all in assemlby and also C
+; heavy at first but at least you know everything is dynamically allocated
+
+
 allocateStrMem:
     mov rbx, msg_arr
 
@@ -63,6 +74,17 @@ allocateStrMem:
     syscall
 
     ; error checking for this?
+    ; can use standard C functions, malloc, need to figure out that setup --------------- CHECK
+    ; initialize string once
+    ; creat dyn mem
+    ; array that can hold 10 addresses o
+    ; need to dyn allocat 10 blocks
+    ; each time dyn alloc a block, it will be empty
+    ; then have to copy the characters char by char into the block
+    ; can do manually
+    ; then has to point to the string
+    ; 
+
 
     ; cmp rax, -1
     ; je failed_alloc
@@ -209,8 +231,10 @@ printEL:
 
     jmp randChooseE
 
+;not complete yet
 randChooseE:
     rdrand eax ;generate and store a randomly generated number in eax
+    ;even or odd, use div instruction, mod will be in the rdx register
 
     cmp eax, 64 ;need to figure out a different number for this
     ja goReverse

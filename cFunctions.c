@@ -14,8 +14,9 @@ free
 */
 
 //I think this is more similar to another class activity in the past
-
-void read (char arr[][], char str[], int pos) { //array had incomplete element type, so apparently in C you need at least one of the [][] to have a number specified
+//dyn alloc mem and
+//might need more code
+void read (char *arr[], char str[], int pos) { //array had incomplete element type, so apparently in C you need at least one of the [][] to have a number specified
     if ((str[0] > 64 && str[0] < 91) && str[strlen(str) - 1] == '.' || str[strlen(str) - 1] == '!' || str[strlen(str) - 1] == '?') {
         arr[pos] = str; //apparently this memory location can't be modified?
     }
