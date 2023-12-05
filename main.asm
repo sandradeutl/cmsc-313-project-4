@@ -18,6 +18,11 @@ menuPromptLen:  equ $- menuPrompt
 ;idk why the color is completely in string form though
 ; need to add the "Invalid option, try again!" part
 
+invalidPrompt:  db "Invalid option, try again!", 10
+invalidPromptLen:  equ $- invalidPrompt
+
+;these print letters are for testing - where the labels are called is where the actual function calling will be done
+
 printS:         db "this is s", 10
 printSLen       equ $- printS
 
@@ -49,6 +54,7 @@ extern printStats
 extern free
 
 main:
+    push rbp ;maybe?
     xor r8, r8
     xor r10, r10 ;this will be the temporary z counter
 
@@ -132,24 +138,24 @@ comparing:
     mov r8b, byte[menuAns]
 
     cmp r8b, 83 ;s
-    je printSL
+    je optionDisplay
     cmp r8b, 115
-    je printSL
+    je optionDisplay
 
     cmp r8b, 82 ;r
-    je printRL
+    je optionDisplay
     cmp r8b, 114
-    je printRL
+    je optionDisplay
 
     cmp r8b, 69 ;e
-    je printEL
+    je optionEncrypt
     cmp r8b, 101
-    je printEL
+    je optionEncrypt
 
     cmp r8b, 80 ;p
-    je printPL
+    je optionPrint
     cmp r8b, 112
-    je printPL
+    je optionPrint
 
     cmp r8b, 81 ;q
     je exit
@@ -170,7 +176,7 @@ incrementCat:
     jmp prompt
 
 
-printSL:
+optionDisplay:
     xor r10, r10
     
     mov rax, 1
@@ -182,7 +188,7 @@ printSL:
 
     jmp prompt
 
-printRL:
+optionDisplay:
     xor r10, r10
 
     mov rax, 1
@@ -196,7 +202,7 @@ printRL:
 
 ;need to randomly determine which to call
 ;need a je statement for whichever c function to call
-printEL:
+optionEncrypt:
     xor r10, r10
 
     mov rax, 1
@@ -212,7 +218,7 @@ randChooseE:
 
     cmp eax, 64 ;need to figure out a different number for this
     ja goReverse
-    cmp eax, 64
+    cmp eax, 64 ;do we need to compare twice? because if it doesn't jump to goReverse, the next line is already the "else"
     jbe goWeave
 
     jmp prompt
@@ -227,7 +233,7 @@ goWeave:
 
     jmp prompt
 
-printPL:
+optionPrint:
     xor r10, r10
 
     mov rax, 1
