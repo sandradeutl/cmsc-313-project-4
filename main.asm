@@ -1,3 +1,8 @@
+extern read
+extern display
+extern weave
+extern printStats
+extern free
 section .data
 
 msg1: db "This is the origional message.", 0
@@ -143,9 +148,9 @@ comparing:
     je optionDisplay
 
     cmp r8b, 82 ;r
-    je optionDisplay
+    je optionRead
     cmp r8b, 114
-    je optionDisplay
+    je optionRead
 
     cmp r8b, 69 ;e
     je optionEncrypt
@@ -188,7 +193,7 @@ optionDisplay:
 
     jmp prompt
 
-optionDisplay:
+optionRead:
     xor r10, r10
 
     mov rax, 1
