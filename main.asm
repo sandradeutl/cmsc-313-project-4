@@ -51,13 +51,6 @@ section .text
 
 global main
 
-;external c functions
-extern read
-extern display
-extern weave
-extern printStats
-extern free
-
 main:
     push rbp ;maybe?
     xor r8, r8
