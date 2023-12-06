@@ -74,10 +74,6 @@ allocateStrMem:
 
     ; then has to point to the string
 
-
- ; overcomplicated ----------------------------------------------------   
-    ;mov rbx, msg_arr
-
     mov edi, 12 ;need to figue out syscall for this
     mov eax, 12
     syscall
@@ -198,8 +194,6 @@ optionDisplay:
     
     mov rax, 1
     mov rdi, 1
-    mov rsi, printS
-    mov rdx, printSLen
     call display
     syscall
 
@@ -210,8 +204,6 @@ optionRead:
 
     mov rax, 1
     mov rdi, 1
-    mov rsi, printR
-    mov rdx, printRLen
     call read
     syscall
 
@@ -224,8 +216,6 @@ optionEncrypt:
 
     mov rax, 1
     mov rdi, 1
-    mov rsi, printE
-    mov rdx, printELen
     syscall
 
     jmp randChooseE
@@ -255,8 +245,6 @@ optionPrint:
 
     mov rax, 1
     mov rdi, 1
-    mov rsi, printP
-    mov rdx, printPLen
     call printStats
     syscall
 
