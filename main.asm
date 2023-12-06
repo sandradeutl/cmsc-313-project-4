@@ -1,3 +1,8 @@
+extern read
+extern display
+extern weave
+extern printStats
+extern free
 section .data
 
 ; how do we choose what string to work on? - prompt user
@@ -7,6 +12,18 @@ menuPrompt:     db "Encryption menu options:", 10 ,"s - show current messages", 
 menuPromptLen:  equ $- menuPrompt
 
 ; need to add the "Invalid option, try again!" part
+
+printS:         db "this is s", 10
+printSLen       equ $- printS
+
+printR:         db "this is r", 10
+printRLen       equ $- printR
+
+printE:         db "this is e", 10 ;need to figure out the string storage/passing situation here
+printELen       equ $- printE
+
+printP:         db "this is p", 10
+printPLen       equ $- printP
 
 cat:            db "      |\      _,,,---,,_", 10, "ZZZzz /,`.-'`'    -.  ;-;;,_", 10, "     |,4-  ) )-,_. ,\ (  `'-'", 10, "    '---''(_/--'  `-'\_)  sshh, the cat's sleeping. (Felix Lee) ", 10
 catLen:         equ $- cat
@@ -19,14 +36,8 @@ section .text
 
 global main
 
-;external c functions
-extern read
-extern display
-extern weave
-extern printStats
-extern free
-
 main:
+    push rbp ;maybe?
     xor r8, r8
     xor r10, r10 ;this will be the temporary z counter
 
@@ -83,24 +94,24 @@ comparing:
     mov r8b, byte[menuAns]
 
     cmp r8b, 83 ;s
-    je printSL
+    je optionDisplay
     cmp r8b, 115
-    je printSL
+    je optionDisplay
 
     cmp r8b, 82 ;r
-    je printRL
+    je optionRead
     cmp r8b, 114
-    je printRL
+    je optionRead
 
     cmp r8b, 69 ;e
-    je printEL
+    je optionEncrypt
     cmp r8b, 101
-    je printEL
+    je optionEncrypt
 
     cmp r8b, 80 ;p
-    je printPL
+    je optionPrint
     cmp r8b, 112
-    je printPL
+    je optionPrint
 
     cmp r8b, 81 ;q
     je exit
@@ -120,6 +131,7 @@ incrementCat:
     je catPrint
     jmp prompt
 
+
 printSL:
     xor r10, r10
     
@@ -132,7 +144,7 @@ printSL:
 
     jmp prompt
 
-printRL:
+optionRead:
     xor r10, r10
 
     mov rax, 1
@@ -146,7 +158,7 @@ printRL:
 
 ;need to randomly determine which to call
 ;need a je statement for whichever c function to call
-printEL:
+optionEncrypt:
     xor r10, r10
 
     mov rax, 1
@@ -164,7 +176,7 @@ randChooseE:
 
     cmp eax, 64 ;need to figure out a different number for this
     ja goReverse
-    cmp eax, 64
+    cmp eax, 64 ;do we need to compare twice? because if it doesn't jump to goReverse, the next line is already the "else"
     jbe goWeave
 
     jmp prompt
@@ -178,9 +190,6 @@ goWeave:
     call weave
 
     jmp prompt
-
-invalidOption:
-
 
 printPL:
     xor r10, r10
