@@ -2,16 +2,7 @@ section .data
 
 ; how do we choose what string to work on?
 
-msg1: db "This is the origional message.", 0
-msg2: db "This is the origional message.", 0
-msg3: db "This is the origional message.", 0
-msg4: db "This is the origional message.", 0
-msg5: db "This is the origional message.", 0
-msg6: db "This is the origional message.", 0
-msg7: db "This is the origional message.", 0
-msg8: db "This is the origional message.", 0
-msg9: db "This is the origional message.", 0
-msg10: db "This is the origional message.", 0
+
 
 msg_arr: dq msg1, msg2, msg3, msg4, msg5, msg6, msg7, msg8, msg9, msg10
 
@@ -54,7 +45,7 @@ main:
     xor r8, r8
     xor r10, r10 ;this will be the temporary z counter
 
-;allocate dynamic memory for string
+;allocate dynamic memory for string - two methods
 
 ; initial strings aren't dyn alloc, y
 ;ou only dyn allo when user wants to read a message, would do dyn mem alloc in C
