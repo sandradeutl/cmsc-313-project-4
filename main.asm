@@ -5,6 +5,7 @@ extern printStats
 extern free
 section .data
 
+dv: dw 2
 msg: db "This is the original message.", 0
 menuPrompt:     db "Encryption menu options:", 10 ,"s - show current messages", 10 ,"r - read new message", 10 ,"e - transform", 10 ,"p - print stats", 10 ,"q - quit program", 10 ,"enter option letter -> "
 menuPromptLen:  equ $- menuPrompt
@@ -155,14 +156,13 @@ optionEncrypt:
 
     jmp randChooseE
 
-randChooseE:
+randChooseE: ; test case this later
     rdrand eax ;generate and store a randomly generated number in eax
-
-    cmp eax, 64 ;need to figure out a different number for this
+    mov ebx, 2
+    div ebx
+    
+    cmp edx, 1 ; if the number is odd
     ja goReverse
-    cmp eax, 64 ;do we need to compare twice? because if it doesn't jump to goReverse, the next line is already the "else"
-    jbe goWeave
-
     jmp prompt
 
 goReverse:
