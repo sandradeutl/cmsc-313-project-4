@@ -47,7 +47,7 @@ main:
 
 allocateStrMem:
     ; create dyn memory
-    mov edi, 40 ;determine size later for now
+    mov edi, 10 ;determine size later for now
     extern malloc
     call malloc
 
