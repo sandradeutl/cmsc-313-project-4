@@ -160,14 +160,14 @@ comparing:
     cmp r8b, 122
     je incrementCat
 
-    jmp prompt ;else statemetn
+    jmp invalid ;else statemetn
 
 incrementCat:
     mov r10, zCounter
     inc r10
     cmp r10, 4 ;this only runs with the wrong letter
     je catPrint
-    jmp prompt
+    jmp invalid
 
 
 optionDisplay:
@@ -238,6 +238,17 @@ optionPrint:
     syscall
 
     jmp prompt
+
+invalid:
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, invalidPrompt
+    mov rdx, invalidPromptLen
+
+    syscall
+
+    jmp prompt
+
 
 catPrint:
     mov rax, 1
