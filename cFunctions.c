@@ -14,51 +14,81 @@ free
 */
 
 //I think this is more similar to another class activity in the past
-//dyn alloc mem and
-//might need more code
-void read (char *arr[], char str[], int pos) { //array had incomplete element type, so apparently in C you need at least one of the [][] to have a number specified
+
+void read (char** arr, char str[]) { //array had incomplete element type, so apparently in C you need at least one of the [][] to have a number specified
+    int loc;
+    printf("Please enter a location for the string in the array: ");
+    scanf("%d", &loc);
+    while (loc > 10 || loc < 1) {
+        printf("Please enter a VALID location for the string in the array (1-10): ");
+        scanf("%d", &loc);
+    }
+
+    loc--; // putting it in array position
+
     if ((str[0] > 64 && str[0] < 91) && str[strlen(str) - 1] == '.' || str[strlen(str) - 1] == '!' || str[strlen(str) - 1] == '?') {
-        arr[pos] = str; //apparently this memory location can't be modified?
+        free(arr[loc]); //first deleting the string that was there before
+        arr[loc] = (char *) malloc(sizeof(char) * strlen(str));
+
+        for (int i = 0; i < strlen(str); i++) {
+            arr[loc][i] = str[i];
+        }
     }
     else {
         printf("Error message");
     }
 }
 
-void display (char* arr[][]) {
+void display (char** arr) {
     for (int i = 0; i < 10; i++) {
         printf(" %s \n", arr[i]);
     }
 }
 
-char[] weave (char str[]) {
-    if (strlen(str) > 2) {
-        for (int i = 0; i + 4 < strlen(str); i += 4) {
-            char temp = str[i + 1];
-            str[i + 1] = str[i + 2];
-            str[i + 2] = str[i + 1];
+void weave (char** arr) {
+
+    int loc;
+    printf("Please enter a location for the string in the array: ");
+    scanf("%d", &loc);
+    while (loc > 10 || loc < 1) {
+        printf("Please enter a VALID location for the string in the array (1-10): ");
+        scanf("%d", &loc);
+    }
+    
+    if (strlen(arr[loc]) > 2) {
+        for (int i = 0; i + 4 < strlen(arr[loc]); i += 4) {
+            char temp = arr[loc][i + 1];
+            arr[loc][i + 1] = arr[loc][i + 2];
+            arr[loc][i + 2] = arr[loc][i + 1];
         }
     }
-
-    return str;
 }
 
-void printStats (char str[]) {
+void printStats (char** arr) {
+    int loc;
+    printf("Please enter a location for the string in the array: ");
+    scanf("%d", &loc);
+    while (loc > 10 || loc < 1) {
+        printf("Please enter a VALID location for the string in the array (1-10): ");
+        scanf("%d", &loc);
+    }
+
+
     //count stats
-    int chars = sizeof(str); //built in function?
+    int chars = strlen(arr[loc]); //built in function?
     int lets = 0;
     int digits = 0;
     int specials = 0;
     int puncs = 0;
 
     for (int i = 0; i < chars; i++) {
-        if ((str[i] >= 'A' && str[i] <= 'Z') || (str[i] >= 'a' || str[i] <= 'z')) {
+        if ((arr[loc][i] >= 'A' && arr[loc][i] <= 'Z') || (arr[loc][i] >= 'a' || arr[loc][i] <= 'z')) {
             lets++;
         }
-        else if (str[i] >= '0' && str <= '9') {
+        else if (arr[loc][i] >= '0' && arr[loc][i] <= '9') {
             digits++;
         }
-        else if (str[i] == '!' && str[i] == '?' && str[i] == '.' && str[i] == ',' && str[i] == '\"' && str[i] == ':' && str[i] == ';' && str[i] == '-' && str[i] == '_' && str[i] == ')' && str[i] == '(' && str[i] == '}' && str[i] == '{' && str[i] == ']' && str[i] == '[') {
+        else if (arr[loc][i] == '!' && arr[loc][i] == '?' && arr[loc][i] == '.' && arr[loc][i] == ',' && arr[loc][i] == '\"' && arr[loc][i] == ':' && arr[loc][i] == ';' && arr[loc][i] == '-' && arr[loc][i] == '_' && arr[loc][i] == ')' && arr[loc][i] == '(' && arr[loc][i] == '}' && arr[loc][i] == '{' && arr[loc][i] == ']' && arr[loc][i] == '[') {
             puncs++;
         }
         else {
@@ -73,7 +103,10 @@ void printStats (char str[]) {
     printf("There are %n punctuation characters. \n", puncs);
 }
 
-void free (char* arr[][]) {
+void freeMem (char** arr) {
     //delete 
-    free(arr); //like that?
+    //free(arr); //like that?
+    for (int i = 0; i < 10; i++) {
+        free(arr[i]);
+    }
 }
