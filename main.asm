@@ -5,23 +5,11 @@ extern printStats
 extern freeMem
 section .data
 
-msg1: db "This is the original message.", 0
-msg2: db "This is the original message.", 0
-msg3: db "This is the original message.", 0
-msg4: db "This is the original message.", 0
-msg5: db "This is the original message.", 0
-msg6: db "This is the original message.", 0
-msg7: db "This is the original message.", 0
-msg8: db "This is the original message.", 0
-msg9: db "This is the original message.", 0
-msg10: db "This is the original message.", 0
-
-msg_arr: dq msg1, msg2, msg3, msg4, msg5, msg6, msg7, msg8, msg9, msg10
+msg: db "This is the original message.", 0
 
 menuPrompt:     db "Encryption menu options:", 10 ,"s - show current messages", 10 ,"r - read new message", 10 ,"e - transform", 10 ,"p - print stats", 10 ,"q - quit program", 10 ,"enter option letter -> "
 menuPromptLen:  equ $- menuPrompt
 ;idk why the color is completely in string form though
-; need to add the "Invalid option, try again!" part
 
 readPrompt      db "Please enter a string: ", 10 ;the string input is in assembly and the location input is in c because of convenience on both ends
 readPromptLen   equ $- readPrompt
