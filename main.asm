@@ -2,6 +2,7 @@ extern read
 extern display
 extern weave
 extern printStats
+extern printf
 extern freeMem
 
 ;---------------------------------------------------------------------------------------
@@ -50,8 +51,8 @@ main:
     mov rdi, readPrompt
     mov rsi, [stringarray]
     mov rax, 0
-    call printStats ; need to test this 
-
+    call printf
+    
 readInput:
 
     mov rdi, msg
@@ -60,11 +61,11 @@ readInput:
 
     mov rdi, inputMsg
     mov rax, 0
-    call printStats
+    call printf
 
     mov rdi, pfmov rsi, [stringarray]
     mov rax, 0
-    call printStats
+    call printf
 
 prompt:
     xor r10, r10
