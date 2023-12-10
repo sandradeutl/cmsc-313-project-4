@@ -1,10 +1,11 @@
-;if you can see this that means that the github updated - katheryne @3:26PM update
+;if you can see this that means that the github updated - katheryne @3:26PM
 
-extern read
+extern readStr
 extern display
 extern weave
 extern printStats
 extern printf
+extern validateStr
 extern freeMem
 
 section .data
@@ -40,35 +41,54 @@ global main
 main:
     mov qword[stringarray], msg
     
-    mov rdi, pf
-    mov rsi, [stringarray]
-    mov rax, 0
-    call printf
-
-    mov rdi, menuPrompt
-    mov rax, 0
-    call printf
+    ;mov rdi, pf
+    ;mov rsi, [stringarray]
+    ;mov rax, 0
+    ;call printf
 
     ;xor r8, r8
-    ;mov r10b, zCounter
+    ;mov r10, zCounter
     ;xor r10, r10 ;this will be the temporary z counter
-    
+
+
+     
 readInput:
     mov rdi, msg
     call validateStr
     mov [stringarray], rax
 
-    mov rdi, newMsg
+    mov rdi, stringarray
+    call display
+
+    ; mov rdi, newMsg
+    ; mov rax, 0
+    ; call printf
+
+    ; mov rdi, pf
+    ; mov rsi, [stringarray]
+    ; mov rax, 0
+    ; call printf
+
+prompt:
+    mov rdi, menuPrompt
+    mov rsi, menuPromptLen
     mov rax, 0
     call printf
 
-    mov rdi, pf
-    mov rsi, [stringarray]
+    ; mov rax, 1
+    ; mov rdi, 1
+    ; mov rsi, menuPrompt
+    ; mov rdx, menuPromptLen
+
     mov rax, 0
-    call printf
+    mov rdi, 0
+    mov rsi, menuAns
+    mov rdx, 2
+    syscall
+
 
 comparing:
-    mov rax, byte[stringarray]
+    mov rax, menuAns
 
     cmp rax, 83 ;s
     je optionDisplay
@@ -103,7 +123,7 @@ comparing:
     jmp invalid ;else statemetn
 
 incrementCat:
-    mov r10b, zCounter
+    mov r10, zCounter
     inc r10
     cmp r10, 4 ;this only runs with the wrong letter
     je catPrint
@@ -111,17 +131,17 @@ incrementCat:
 
 
 optionDisplay:
-    mov r10b, zCounter
+    mov r10, zCounter
     xor r10, r10
     
     ;put parameters in place
-    mov rdi, [new]
+    mov rdi, [stringarray]
     call display
 
     jmp prompt
 
 optionRead:
-    mov r10b, zCounter
+    mov r10, zCounter
     xor r10, r10
 
     ;asking for string
@@ -140,9 +160,9 @@ optionRead:
     ;rax also has the size of the string here??
 
     ;put parameters in place
-    mov rdi, msg_arr
+    mov rdi, stringarray
     mov rsi, newString
-    call read
+    call readStr
 
 
     jmp prompt
@@ -150,7 +170,7 @@ optionRead:
 ;need to randomly determine which to call
 ;need a je statement for whichever c function to call
 optionEncrypt:
-    mov r10b, zCounter
+    mov r10, zCounter
     xor r10, r10
 
     jmp randChooseE
@@ -165,30 +185,41 @@ randChooseE:
     jmp goWeave
 
 goReverse:
-   call reverse
+    ;need to figure out how to pass a certain string to
+
+    ;put parameters in place
+    
     jmp prompt
 
 goWeave:
-    mov rdi, msg_arr
+    ;put parameters in place
+    ;where to ask for location of the string array?
+    ;currently i am going to choose to ask for the location in  C because it's easier there
+    mov rdi, stringarray
     call weave
+
     jmp prompt
 
 optionPrint:
-    mov r10b, zCounter
+    mov r10, zCounter
     xor r10, r10
 
-    mov rdi, msg_arr
+    ;put parameters in place
+    mov rdi, stringarray
     call printStats
+
     jmp prompt
 
 invalid:
-    mov r10b, zCounter
+    mov r10, zCounter
     xor r10, r10
 
     mov rax, 1
     mov rdi, 1
     mov rsi, invalidPrompt
     mov rdx, invalidPromptLen
+
+    syscall
 
     jmp prompt
 
@@ -201,7 +232,7 @@ catPrint:
     syscall
 
 exit:
-    exor rsi, rsi
+    xor rsi, rsi
     mov rdi, [stringarray]
     call freeMem
     xor rax, rax
