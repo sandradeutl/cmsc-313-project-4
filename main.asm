@@ -5,8 +5,6 @@ extern printStats
 extern printf
 extern freeMem
 
-;---------------------------------------------------------------------------------------
-
 section .data
 msg: db "This is the original message.", 10, 0
 msg_len: equ $- msg
@@ -14,11 +12,11 @@ pf: db "%s", 10, 0
 
 menuPrompt:     db "Encryption menu options:", 10 ,"s - show current messages", 10 ,"r - read new message", 10 ,"e - transform", 10 ,"p - print stats", 10 ,"q - quit program", 10 ,"enter option letter -> "
 menuPromptLen:  equ $- menuPrompt
-;idk why the color is completely in string form though
 
 readPrompt:      db "Please enter a string: ", 10 ;the string input is in assembly and the location input is in c because of convenience on both ends
 readPromptLen:   equ $- readPrompt
 
+newMsg: db "Here is your new message:"
 inputMsg: db "User input message.", 10, 10, 0 
 
 invalidPrompt:  db "Invalid option, try again!", 10
@@ -27,92 +25,77 @@ invalidPromptLen:  equ $- invalidPrompt
 cat:            db "      |\      _,,,---,,_", 10, "ZZZzz /,`.-'`'    -.  ;-;;,_", 10, "     |,4-  ) )-,_. ,\ (  `'-'", 10, "    '---''(_/--'  `-'\_)  sshh, the cat's sleeping. (Felix Lee) ", 10
 catLen:         equ $- cat
 
-;---------------------------------------------------------------------------------------
-
 section .bss
 menuAns:        resb 2 ;one character + newLine
 zCounter:       resb 1 ;z counter
 newString:      resb 100 ;temp location for new input string
 stringarray:    resq 1
 
-;---------------------------------------------------------------------------------------
-
 section .text
 
 global main
 
 main:
-    xor r8, r8
-    mov r10b, zCounter
-    xor r10, r10 ;this will be the temporary z counter
-
     mov qword[stringarray], msg
-
-    mov rdi, readPrompt
+    
+    mov rdi, pf
     mov rsi, [stringarray]
     mov rax, 0
     call printf
+
+    mov rdi, menuPrompt
+    mov rax, 0
+    call printf
+
+    ;xor r8, r8
+    ;mov r10b, zCounter
+    ;xor r10, r10 ;this will be the temporary z counter
     
 readInput:
-
     mov rdi, msg
     call validateStr
     mov [stringarray], rax
 
-    mov rdi, inputMsg
+    mov rdi, newMsg
     mov rax, 0
     call printf
 
-    mov rdi, pfmov rsi, [stringarray]
+    mov rdi, pf
+    mov rsi, [stringarray]
     mov rax, 0
     call printf
-
-prompt:
-    xor r10, r10
-    
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, menuPrompt
-    mov rdx, menuPromptLen
-    syscall
-
-    mov rax, 0
-    mov rdi, 0
-    mov rsi, menuAns
-    mov rdx, 2
-    syscall
 
 comparing:
-    mov r8b, byte[menuAns]
+    mov rax, byte[stringarray]
 
-    cmp r8b, 83 ;s
+    cmp rax, 83 ;s
     je optionDisplay
-    cmp r8b, 115
+    cmp rax, 115
     je optionDisplay
 
-    cmp r8b, 82 ;r
+    cmp rax, 82 ;r
     je optionRead
-    cmp r8b, 114
+    cmp rax, 114
     je optionRead
 
-    cmp r8b, 69 ;e
+    cmp rax, 69 ;e
     je optionEncrypt
-    cmp r8b, 101
+    cmp rax, 101
     je optionEncrypt
 
-    cmp r8b, 80 ;p
+    cmp rax, 80 ;p
     je optionPrint
-    cmp r8b, 112
+    cmp rax, 112
     je optionPrint
 
-    cmp r8b, 81 ;q
+    cmp rax, 81 ;q
     je exit
-    cmp r8b, 113
+    cmp rax, 113
     je exit
 
-    cmp r8b, 90 ;z (counter)
+    cmp rax, 90 ;z (counter)
     je incrementCat
-    cmp r8b, 122
+    cmp rax, 122
     je incrementCat
 
     jmp invalid ;else statemetn
