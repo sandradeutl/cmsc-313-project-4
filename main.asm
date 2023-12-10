@@ -115,7 +115,7 @@ optionDisplay:
     xor r10, r10
     
     ;put parameters in place
-    mov rdi, [stringarray]
+    mov rdi, [new]
     call display
 
     jmp prompt
