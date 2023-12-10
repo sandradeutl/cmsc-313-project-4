@@ -3,16 +3,22 @@ extern display
 extern weave
 extern printStats
 extern freeMem
-section .data
 
-msg: db "This is the original message.", 0
+;---------------------------------------------------------------------------------------
+
+section .data
+msg: db "This is the original message.", 10, 0
+msg_len: equ $- msg
+pf: db "%s", 10, 0
 
 menuPrompt:     db "Encryption menu options:", 10 ,"s - show current messages", 10 ,"r - read new message", 10 ,"e - transform", 10 ,"p - print stats", 10 ,"q - quit program", 10 ,"enter option letter -> "
 menuPromptLen:  equ $- menuPrompt
 ;idk why the color is completely in string form though
 
-readPrompt      db "Please enter a string: ", 10 ;the string input is in assembly and the location input is in c because of convenience on both ends
-readPromptLen   equ $- readPrompt
+readPrompt:      db "Please enter a string: ", 10 ;the string input is in assembly and the location input is in c because of convenience on both ends
+readPromptLen:   equ $- readPrompt
+
+inputMsg: db "User input message.", 10, 10, 0 
 
 invalidPrompt:  db "Invalid option, try again!", 10
 invalidPromptLen:  equ $- invalidPrompt
@@ -20,54 +26,45 @@ invalidPromptLen:  equ $- invalidPrompt
 cat:            db "      |\      _,,,---,,_", 10, "ZZZzz /,`.-'`'    -.  ;-;;,_", 10, "     |,4-  ) )-,_. ,\ (  `'-'", 10, "    '---''(_/--'  `-'\_)  sshh, the cat's sleeping. (Felix Lee) ", 10
 catLen:         equ $- cat
 
-section .bss
+;---------------------------------------------------------------------------------------
 
+section .bss
 menuAns:        resb 2 ;one character + newLine
 zCounter:       resb 1 ;z counter
-newString       resb 100
+newString:      resb 100 ;temp location for new input string
+stringarray:    resq 1
+
+;---------------------------------------------------------------------------------------
 
 section .text
 
 global main
-
-;external c functions
-extern read
-extern display
-extern weave
-extern printStats
-extern freeMem
 
 main:
     xor r8, r8
     mov r10b, zCounter
     xor r10, r10 ;this will be the temporary z counter
 
-allocateStrMem:
-    ; create dyn memory
-    mov edi, 10 ;determine size later for now
-    extern malloc
-    call malloc
+    mov qword[stringarray], msg
 
-    mov DWORD[rax], 7 ;fix this constant later
-    mov eax, DWORD[rax]
-    ret
+    mov rdi, readPrompt
+    mov rsi, [stringarray]
+    mov rax, 0
+    call printStats ; need to test this 
 
-    ; array that holds 10 addresses
-    
+readInput:
 
-    ; need to dyn allocat 10 blocks
+    mov rdi, msg
+    call validateStr
+    mov [stringarray], rax
 
-    ; each time dyn alloc a block, it will be empty
+    mov rdi, inputMsg
+    mov rax, 0
+    call printStats
 
-    ; then have to copy the characters char by char into the block
-
-    ; can do manually
-
-    ; then has to point to the string
-
-    mov edi, 12 ;need to figue out syscall for this
-    mov eax, 12
-    syscall
+    mov rdi, pfmov rsi, [stringarray]
+    mov rax, 0
+    call printStats
 
 prompt:
     xor r10, r10
@@ -229,9 +226,8 @@ catPrint:
     syscall
 
 exit:
-    rdi msg_arr
+    exor rsi, rsi
+    mov rdi, [stringarray]
     call freeMem
-
-    mov rax, 60 ;seg faults
-    xor rdi, rdi
-    syscall
+    xor rax, rax
+    ret
