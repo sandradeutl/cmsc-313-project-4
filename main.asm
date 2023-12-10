@@ -165,29 +165,20 @@ randChooseE:
     jmp goWeave
 
 goReverse:
-    ;need to figure out how to pass a certain string to
-
-    ;put parameters in place
-    
+   call reverse
     jmp prompt
 
 goWeave:
-    ;put parameters in place
-    ;where to ask for location of the string array?
-    ;currently i am going to choose to ask for the location in  C because it's easier there
     mov rdi, msg_arr
     call weave
-
     jmp prompt
 
 optionPrint:
     mov r10b, zCounter
     xor r10, r10
 
-    ;put parameters in place
     mov rdi, msg_arr
     call printStats
-
     jmp prompt
 
 invalid:
@@ -198,8 +189,6 @@ invalid:
     mov rdi, 1
     mov rsi, invalidPrompt
     mov rdx, invalidPromptLen
-
-    syscall
 
     jmp prompt
 
