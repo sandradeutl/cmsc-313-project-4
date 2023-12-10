@@ -2,6 +2,10 @@
 #include <stdlib.h> //fprint, fgets //
 #include <string.h>
 #include <math.h>
+#include <unistd.h>
+#include <sys/wait.h>
+#include <stdbool.h>
+#include <ctype.h>
 
 /*
 
@@ -103,10 +107,39 @@ void printStats (char** arr) {
     printf("There are %n punctuation characters. \n", puncs);
 }
 
-void freeMem (char** arr) {
-    //delete 
-    //free(arr); //like that?
-    for (int i = 0; i < 10; i++) {
-        free(arr[i]);
-    }
+void validateStr(char * messages) {
+
+    int buffer = 256;
+    int pos = 0;
+
+    char* cmd = malloc(sizeof(char) * buffer);
+
+    int cha;
+    int cont = 1;
+
+    while (cont == 1) {
+        cha = getChar(sdtin);
+        if (cha == EOF || cha == '\n') {
+            cmd[pos] = '\0';
+            cont = 0;
+        }
+        else {
+            cmd[pos] = cha;
+        }
+        pos++;
+
+        if(pos >= buffer) {
+            cha = fgetc(stdin);
+            buffer += 256;
+            cmd = realloc(cmd, buffer);
+        }
+    } //end while
+
+    //dont use free(cmd); yet!
+    return cmd;
+} //end validateStr()
+
+void freeMem (char* messages) {
+    
+    free(messages);
 }

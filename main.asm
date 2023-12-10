@@ -1,18 +1,25 @@
+;if you can see this that means that the github updated - katheryne @3:26PM
+
 extern read
 extern display
 extern weave
 extern printStats
+extern printf
 extern freeMem
-section .data
 
-msg: db "This is the original message.", 0
+section .data
+msg: db "This is the original message.", 10, 0
+msg_len: equ $- msg
+pf: db "%s", 10, 0
 
 menuPrompt:     db "Encryption menu options:", 10 ,"s - show current messages", 10 ,"r - read new message", 10 ,"e - transform", 10 ,"p - print stats", 10 ,"q - quit program", 10 ,"enter option letter -> "
 menuPromptLen:  equ $- menuPrompt
-;idk why the color is completely in string form though
 
-readPrompt      db "Please enter a string: ", 10 ;the string input is in assembly and the location input is in c because of convenience on both ends
-readPromptLen   equ $- readPrompt
+readPrompt:      db "Please enter a string: ", 10 ;the string input is in assembly and the location input is in c because of convenience on both ends
+readPromptLen:   equ $- readPrompt
+
+newMsg: db "Here is your new message:"
+inputMsg: db "User input message.", 10, 10, 0 
 
 invalidPrompt:  db "Invalid option, try again!", 10
 invalidPromptLen:  equ $- invalidPrompt
@@ -21,100 +28,76 @@ cat:            db "      |\      _,,,---,,_", 10, "ZZZzz /,`.-'`'    -.  ;-;;,_
 catLen:         equ $- cat
 
 section .bss
-
 menuAns:        resb 2 ;one character + newLine
 zCounter:       resb 1 ;z counter
-newString       resb 100
+newString:      resb 100 ;temp location for new input string
+stringarray:    resq 1
 
 section .text
 
 global main
 
-;external c functions
-extern read
-extern display
-extern weave
-extern printStats
-extern freeMem
-
 main:
-    xor r8, r8
-    mov r10b, zCounter
-    xor r10, r10 ;this will be the temporary z counter
-
-allocateStrMem:
-    ; create dyn memory
-    mov edi, 10 ;determine size later for now
-    extern malloc
-    call malloc
-
-    mov DWORD[rax], 7 ;fix this constant later
-    mov eax, DWORD[rax]
-    ret
-
-    ; array that holds 10 addresses
+    mov qword[stringarray], msg
     
-
-    ; need to dyn allocat 10 blocks
-
-    ; each time dyn alloc a block, it will be empty
-
-    ; then have to copy the characters char by char into the block
-
-    ; can do manually
-
-    ; then has to point to the string
-
-    mov edi, 12 ;need to figue out syscall for this
-    mov eax, 12
-    syscall
-
-prompt:
-    xor r10, r10
-    
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, menuPrompt
-    mov rdx, menuPromptLen
-    syscall
-
+    mov rdi, pf
+    mov rsi, [stringarray]
     mov rax, 0
-    mov rdi, 0
-    mov rsi, menuAns
-    mov rdx, 2
-    syscall
+    call printf
+
+    mov rdi, menuPrompt
+    mov rax, 0
+    call printf
+
+    ;xor r8, r8
+    ;mov r10b, zCounter
+    ;xor r10, r10 ;this will be the temporary z counter
+    
+readInput:
+    mov rdi, msg
+    call validateStr
+    mov [stringarray], rax
+
+    mov rdi, newMsg
+    mov rax, 0
+    call printf
+
+    mov rdi, pf
+    mov rsi, [stringarray]
+    mov rax, 0
+    call printf
 
 comparing:
-    mov r8b, byte[menuAns]
+    mov rax, byte[stringarray]
 
-    cmp r8b, 83 ;s
+    cmp rax, 83 ;s
     je optionDisplay
-    cmp r8b, 115
+    cmp rax, 115
     je optionDisplay
 
-    cmp r8b, 82 ;r
+    cmp rax, 82 ;r
     je optionRead
-    cmp r8b, 114
+    cmp rax, 114
     je optionRead
 
-    cmp r8b, 69 ;e
+    cmp rax, 69 ;e
     je optionEncrypt
-    cmp r8b, 101
+    cmp rax, 101
     je optionEncrypt
 
-    cmp r8b, 80 ;p
+    cmp rax, 80 ;p
     je optionPrint
-    cmp r8b, 112
+    cmp rax, 112
     je optionPrint
 
-    cmp r8b, 81 ;q
+    cmp rax, 81 ;q
     je exit
-    cmp r8b, 113
+    cmp rax, 113
     je exit
 
-    cmp r8b, 90 ;z (counter)
+    cmp rax, 90 ;z (counter)
     je incrementCat
-    cmp r8b, 122
+    cmp rax, 122
     je incrementCat
 
     jmp invalid ;else statemetn
@@ -132,7 +115,7 @@ optionDisplay:
     xor r10, r10
     
     ;put parameters in place
-    mov rdi, msg_arr
+    mov rdi, [new]
     call display
 
     jmp prompt
@@ -182,29 +165,20 @@ randChooseE:
     jmp goWeave
 
 goReverse:
-    ;need to figure out how to pass a certain string to
-
-    ;put parameters in place
-    
+   call reverse
     jmp prompt
 
 goWeave:
-    ;put parameters in place
-    ;where to ask for location of the string array?
-    ;currently i am going to choose to ask for the location in  C because it's easier there
     mov rdi, msg_arr
     call weave
-
     jmp prompt
 
 optionPrint:
     mov r10b, zCounter
     xor r10, r10
 
-    ;put parameters in place
     mov rdi, msg_arr
     call printStats
-
     jmp prompt
 
 invalid:
@@ -215,8 +189,6 @@ invalid:
     mov rdi, 1
     mov rsi, invalidPrompt
     mov rdx, invalidPromptLen
-
-    syscall
 
     jmp prompt
 
@@ -229,9 +201,8 @@ catPrint:
     syscall
 
 exit:
-    rdi msg_arr
+    exor rsi, rsi
+    mov rdi, [stringarray]
     call freeMem
-
-    mov rax, 60 ;seg faults
-    xor rdi, rdi
-    syscall
+    xor rax, rax
+    ret
