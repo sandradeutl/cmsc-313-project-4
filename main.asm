@@ -1,3 +1,5 @@
+;if you can see this that means that the github updated - katheryne @3:26PM
+
 extern read
 extern display
 extern weave
@@ -113,7 +115,7 @@ optionDisplay:
     xor r10, r10
     
     ;put parameters in place
-    mov rdi, msg_arr
+    mov rdi, [stringarray]
     call display
 
     jmp prompt
