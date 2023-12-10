@@ -19,7 +19,7 @@ free
 
 //I think this is more similar to another class activity in the past
 
-void read (char** arr, char str[]) { //array had incomplete element type, so apparently in C you need at least one of the [][] to have a number specified
+void readStr (char** arr, char str[]) { //array had incomplete element type, so apparently in C you need at least one of the [][] to have a number specified
     int loc;
     printf("Please enter a location for the string in the array: ");
     scanf("%d", &loc);
@@ -107,7 +107,7 @@ void printStats (char** arr) {
     printf("There are %n punctuation characters. \n", puncs);
 }
 
-void validateStr(char * messages) {
+char* validateStr(char * messages) {
 
     int buffer = 256;
     int pos = 0;
@@ -118,7 +118,8 @@ void validateStr(char * messages) {
     int cont = 1;
 
     while (cont == 1) {
-        cha = getChar(sdtin);
+        //cha = getchar(stdin);
+        cha = getchar();
         if (cha == EOF || cha == '\n') {
             cmd[pos] = '\0';
             cont = 0;
