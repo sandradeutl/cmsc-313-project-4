@@ -1,5 +1,3 @@
-;if you can see this that means that the github updated - katheryne @3:26PM
-
 extern readStr
 extern display
 extern weave
@@ -13,24 +11,21 @@ msg: db "This is the original message.", 10, 0
 msg_len: equ $- msg
 pf: db "%s", 10, 0
 
-menuPrompt:     db "Encryption menu options:", 10 ,"s - show current messages", 10 ,"r - read new message", 10 ,"e - transform", 10 ,"p - print stats", 10 ,"q - quit program", 10 ,"enter option letter -> "
+menuPrompt:     db "Encryption menu options:", 10 ,"s - show current messages", 10 ,"r - read new message", 10 ,"e - transform", 10 ,"p - print stats", 10 ,"q - quit program", 10, 0
+;10 ,"enter option letter -> ", 0
 menuPromptLen:  equ $- menuPrompt
 
 readPrompt:      db "Please enter a string: ", 10 ;the string input is in assembly and the location input is in c because of convenience on both ends
 readPromptLen:   equ $- readPrompt
 
-newMsg: db "Here is your new message:"
-inputMsg: db "User input message.", 10, 10, 0 
-
 invalidPrompt:  db "Invalid option, try again!", 10
 invalidPromptLen:  equ $- invalidPrompt
 
-cat:            db "      |\      _,,,---,,_", 10, "ZZZzz /,`.-'`'    -.  ;-;;,_", 10, "     |,4-  ) )-,_. ,\ (  `'-'", 10, "    '---''(_/--'  `-'\_)  sshh, the cat's sleeping. (Felix Lee) ", 10
+cat:            db "      |\      _,,,---,,_", 10, "ZZZzz /,`.-'`'    -.  ;-;;,_", 10, "     |,4-  ) )-,_. ,\ (  `'-'", 10, "    '---''(_/--'  `-'\_)  sshh, the cat's sleeping.", 10
 catLen:         equ $- cat
 
 section .bss
 menuAns:        resb 2 ;one character + newLine
-zCounter:       resb 1 ;z counter
 newString:      resb 100 ;temp location for new input string
 stringarray:    resq 1
 
@@ -40,15 +35,13 @@ global main
 
 main:
     mov qword[stringarray], msg
+
+    xor r12, r12
     
     ;mov rdi, pf
     ;mov rsi, [stringarray]
     ;mov rax, 0
     ;call printf
-
-    ;xor r8, r8
-    ;mov r10, zCounter
-    ;xor r10, r10 ;this will be the temporary z counter
 
 
      
@@ -56,9 +49,6 @@ readInput:
     mov rdi, msg
     call validateStr
     mov [stringarray], rax
-
-    mov rdi, stringarray
-    call display
 
     ; mov rdi, newMsg
     ; mov rax, 0
@@ -90,49 +80,49 @@ prompt:
 comparing:
     mov rax, menuAns
 
-    cmp rax, 83 ;s
+    cmp byte[rax], 83 ;s
     je optionDisplay
-    cmp rax, 115
+    cmp byte[rax], 115
     je optionDisplay
 
-    cmp rax, 82 ;r
+    cmp byte[rax], 82 ;r
     je optionRead
-    cmp rax, 114
+    cmp byte[rax], 114
     je optionRead
 
-    cmp rax, 69 ;e
+    cmp byte[rax], 69 ;e
     je optionEncrypt
-    cmp rax, 101
+    cmp byte[rax], 101
     je optionEncrypt
 
-    cmp rax, 80 ;p
+    cmp byte[rax], 80 ;p
     je optionPrint
-    cmp rax, 112
+    cmp byte[rax], 112
     je optionPrint
 
-    cmp rax, 81 ;q
+    cmp byte[rax], 81 ;q
     je exit
-    cmp rax, 113
+    cmp byte[rax], 113
     je exit
 
-    cmp rax, 90 ;z (counter)
+    cmp byte[rax], 90 ;z (counter)
     je incrementCat
-    cmp rax, 122
+    cmp byte[rax], 122
     je incrementCat
 
     jmp invalid ;else statemetn
 
 incrementCat:
-    mov r10, zCounter
-    inc r10
-    cmp r10, 4 ;this only runs with the wrong letter
+
+    inc r12
+    cmp r12, 4
     je catPrint
-    jmp invalid
+    jmp invalidPrint
 
 
 optionDisplay:
-    mov r10, zCounter
-    xor r10, r10
+
+    xor r12, r12
     
     ;put parameters in place
     mov rdi, [stringarray]
@@ -141,8 +131,8 @@ optionDisplay:
     jmp prompt
 
 optionRead:
-    mov r10, zCounter
-    xor r10, r10
+
+    xor r12, r12
 
     ;asking for string
     mov rax, 1
@@ -170,8 +160,8 @@ optionRead:
 ;need to randomly determine which to call
 ;need a je statement for whichever c function to call
 optionEncrypt:
-    mov r10, zCounter
-    xor r10, r10
+
+    xor r12, r12
 
     jmp randChooseE
 
@@ -201,8 +191,8 @@ goWeave:
     jmp prompt
 
 optionPrint:
-    mov r10, zCounter
-    xor r10, r10
+
+    xor r12, r12
 
     ;put parameters in place
     mov rdi, stringarray
@@ -211,8 +201,11 @@ optionPrint:
     jmp prompt
 
 invalid:
-    mov r10, zCounter
-    xor r10, r10
+
+    xor r12, r12
+    jmp invalidPrompt
+
+invalidPrint:
 
     mov rax, 1
     mov rdi, 1
