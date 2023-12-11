@@ -1,6 +1,7 @@
 // Sandra Deutl - BZ84214
 // Katheryne Lochart- MW24658
 // CMSC 313 Project 4
+// These are C functions to help with main.asm
 
 #include <stdio.h> //printf, scanf //
 #include <stdlib.h> //fprint, fgets //
@@ -13,15 +14,13 @@
 
 /*
 
-read
-display
-weave
-print stats
-free
+read: read out the string from the user given input position
+display: display the string
+weave: applies the weave algorithm to a string
+print stats: print the stats of a string
+free: free dynamically allocated memory
 
 */
-
-//I think this is more similar to another class activity in the past
 
 void read (char** arr, char str[]) { //array had incomplete element type, so apparently in C you need at least one of the [][] to have a number specified
     int loc;
