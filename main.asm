@@ -2,6 +2,8 @@
 ; Katheryne Lochart- MW24658
 ; CMSC 313 Project 4
 
+; This is a menu driven program that allows you to manipulate strings based on the provided options
+
 
 extern read
 extern display
