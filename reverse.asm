@@ -2,6 +2,8 @@
 ; Katheryne Lochart- MW24658
 ; CMSC 313 Project 4
 
+; This program takes a user input number and splits the string in half at that index, then reverses each half and concatenates them together
+
 extern scanf
 
 section .data
