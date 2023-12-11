@@ -1,4 +1,7 @@
-;if you can see this that means that the github updated - katheryne @3:26PM
+; Sandra Deutl - BZ84214
+; Katheryne Lochart- MW24658
+; CMSC 313 Project 4
+
 
 extern read
 extern display
@@ -112,7 +115,7 @@ incrementCat:
 
 optionDisplay:
     mov r10b, zCounter
-    xor r10, r10
+    ;xor r10, r10
     
     ;put parameters in place
     mov rdi, [new]
@@ -122,7 +125,7 @@ optionDisplay:
 
 optionRead:
     mov r10b, zCounter
-    xor r10, r10
+    ;xor r10, r10
 
     ;asking for string
     mov rax, 1
@@ -151,7 +154,7 @@ optionRead:
 ;need a je statement for whichever c function to call
 optionEncrypt:
     mov r10b, zCounter
-    xor r10, r10
+    ;xor r10, r10
 
     jmp randChooseE
 
@@ -175,7 +178,7 @@ goWeave:
 
 optionPrint:
     mov r10b, zCounter
-    xor r10, r10
+    ;xor r10, r10
 
     mov rdi, msg_arr
     call printStats

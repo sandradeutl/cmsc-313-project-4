@@ -1,3 +1,7 @@
+// Sandra Deutl - BZ84214
+// Katheryne Lochart- MW24658
+// CMSC 313 Project 4
+
 #include <stdio.h> //printf, scanf //
 #include <stdlib.h> //fprint, fgets //
 #include <string.h>
@@ -118,7 +122,7 @@ void validateStr(char * messages) {
     int cont = 1;
 
     while (cont == 1) {
-        cha = getChar(sdtin);
+        cha = getChar(stdin);
         if (cha == EOF || cha == '\n') {
             cmd[pos] = '\0';
             cont = 0;

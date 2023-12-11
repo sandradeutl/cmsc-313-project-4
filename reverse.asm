@@ -1,6 +1,6 @@
-; Sandra Deutl - 
+; Sandra Deutl - BZ84214
 ; Katheryne Lochart- MW24658
-; CMSC 313 Project 4 - reverse.asm from project 3
+; CMSC 313 Project 4
 
 extern scanf
 
